@@ -1,0 +1,198 @@
+---
+surname: Hugo Tameirão Seixas
+position: |
+  | I’m a Agronomic Engineer, Master in Remote Sensing and PhD student in Environment and Society.
+  | Specialized in data analysis, data visualization and modelling.
+#address: "State University of Campinas"
+profilepic: "hugo.jpg"
+phone: +55 19 992127034
+email: "seixas.hugo@protonmail.com"
+github: hugotseixas
+linkedin: hugotseixas
+www: hugotseixas.com
+date: "`r format(Sys.time(), '%B %Y')`"
+headcolor: 221a1a
+output: vitae::awesomecv
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+
+```
+
+
+
+```{r}
+
+library(vitae)
+library(emojifont)
+library(fontawesome)
+library(showtext)
+library(tidyverse)
+
+```
+
+# \faIcon{university} Education
+
+```{r}
+
+detailed_entries(
+  data = read_delim("data/edu_en.csv", delim = "|"),
+  what = degree, 
+  when = dates, 
+  with = institute, 
+  where = location, 
+  why = details,
+  .protect = FALSE
+)
+
+```
+
+# \faIcon{brain} Skills
+
+\begin{center} \faIcon{cogs} Technical Skills \end{center}
+
+```{r, out.width="100%", fig.asp=0.38}
+
+font_add_google("Roboto")
+
+showtext_auto()
+
+tibble(
+  skill = c(
+    "R", "SQL", "Python", "Julia", 
+    "Earth Engine", "Qgis", "PostgreSQL",
+    "Git", "LaTeX", "RMarkdown", "Quarto", "Shiny", "Spark"
+  ),
+  group = c(
+    rep("Programming", 4), 
+    rep("Software", 3),
+    rep("Others", 6)
+  ),
+  level = 
+    c(
+      "3", "1", "1", "1", 
+      "2", "2", "1",
+      "1", "1", "2", "2", "2", "1"
+    )
+) %>%
+  ggplot(aes(x = fct_reorder(skill, level, .desc = TRUE), y = 1)) +
+  facet_wrap(~ fct_inorder(group), scales = "free", ncol = 1, strip.position = "left") +
+  geom_point(
+    aes(size = level, fill = level, color = level), 
+    pch = 21,
+    alpha = 0.9,
+    stroke = 2
+  ) +
+  geom_text(
+    aes(label = skill),
+    vjust = -3.1,
+    family = "Roboto",
+    fontface = "bold",
+    size = 2.5
+  ) +
+  scale_size_manual(
+    values = c(3, 7, 11),
+    breaks = c(1, 2, 3),
+    labels = c("Basic", "Intermediary", "Advanced")
+  ) +
+  scale_fill_manual(
+    values = c("#6e948c", "#175449", "#122c43"),
+    breaks = c(1, 2, 3),
+    labels = c("Basic", "Intermediary", "Advanced")
+  ) +
+  scale_color_manual(
+    values = c("#6e948c", "#175449", "#122c43"),
+    breaks = c(1, 2, 3),
+    labels = c("Basic", "Intermediary", "Advanced")
+  ) +
+  guides(
+    fill = guide_legend(reverse = TRUE, label.position = "bottom"), 
+    size = guide_legend(reverse = TRUE, label.position = "bottom"),
+    color = guide_legend(reverse = TRUE, label.position = "bottom")
+  ) +
+  expand_limits(x = c(1, 6)) +
+  theme_void() +
+  theme(
+    strip.text = element_text(family = "Roboto", face = "bold", size = 8),
+    legend.title = element_blank(),
+    aspect.ratio = 0.13,
+    axis.line.x = element_line(color = "#8c8b8a", linetype = 2),
+    legend.text = element_text(family = "Roboto", face = "bold", size = 8)
+  )
+
+```
+
+\vspace{13pt}
+
+\begin{center} \faIcon{language} Language \end{center}
+
+```{r, out.width="100%", fig.asp=0.2}
+
+tibble(
+  habilidade = c("Reading", "Writing", "Listening", "Speaking"),
+  Portuguese = rep("Native", 4),
+  English = c("C2","C1","C2","C2"), 
+  French = c("B1","A2","B1","B1")
+) %>%
+  pivot_longer(2:4) %>%
+  ggplot(aes(x = fct_inorder(name), y = habilidade)) +
+  geom_text(
+    aes(label = value, color = name),
+    family = "Roboto",
+    size = 2.5
+  ) +
+  scale_x_discrete(position = "top") +
+  scale_color_manual(
+    values = c("#175449", "#6e948c", "#122c43"), 
+    guide = NULL
+  ) +
+  theme_void() +
+  theme(
+    axis.text.x = element_text(
+      family = "Roboto", 
+      face = "bold",
+      size = 8,
+      vjust = 3
+    ),
+    axis.text.y = element_text(
+      family = "Roboto", 
+      face = "bold",
+      size = 8
+    ),
+    aspect.ratio = 0.13
+  )
+
+```
+
+# \faIcon{briefcase} Professional Experience
+
+```{r}
+
+detailed_entries(
+  data = read_delim("data/work_en.csv", delim = "|"),
+  what = position, 
+  when = dates, 
+  with = institute, 
+  where = location, 
+  why = details,
+  .protect = FALSE
+)
+
+```
+
+
+# \faIcon{file} Publications
+
+```{r}
+
+detailed_entries(
+  data = read_delim("data/pub.csv", delim = "|"),
+  what = pub, 
+  when = ano
+)
+
+```
